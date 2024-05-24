@@ -3,7 +3,7 @@
 
 ## 发包流程
 pnpm run changeset ———— 可以更新包的版本信息
-pnpm run packages-version ———— 可以同步依赖的版本信息
+pnpm run packages-version ———— 可以同步各自依赖的版本信息
 pnpm run publish ———— 可以发布包到npm平台上
 
 
