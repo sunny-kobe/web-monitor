@@ -11,7 +11,10 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
-    "@websaw/pk1": "^2.0.0",
+    "@websaw/common": "workspace:^",
+    "@websaw/core": "workspace:^",
+    "@websaw/type": "workspace:^",
+    "@websaw/utils": "workspace:^",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },

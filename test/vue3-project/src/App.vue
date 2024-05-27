@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
-import { pk1 } from "@websaw/pk1";
+import { core } from "@websaw/core";
+import { type } from "@websaw/type";
 
 // 使用 pk1 包中的函数
-pk1();
+core();
+type();
 </script>
 
 <template>
