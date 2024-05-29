@@ -9,6 +9,8 @@ pnpm run publish ———— 可以发布包到npm平台上
 
 ## 添加本地包
 pnpm add @websaw/common@workspace:^1.0.0 --filter vue3-project
+pnpm add element-plus --filter vue3-project
+
 
 ## 删除
 pnpm remove @websaw/pk1 --filter vue3-project
