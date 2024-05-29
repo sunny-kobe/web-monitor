@@ -1,97 +1,155 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
-import { core } from "@websaw/core";
-import { type } from "@websaw/type";
-
-// 使用 pk1 包中的函数
-core();
-type();
-</script>
-
 <template>
-  <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="@/assets/logo.svg"
-      width="125"
-      height="125"
-    />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <div id="app">
+    <div class="left-menu">
+      <menu-list :items="lists" />
     </div>
-  </header>
-
-  <RouterView />
+    <el-button class="clean-1" type="primary" @click="showBaseInfo">
+      查看核心基础信息
+    </el-button>
+    <div>
+      <el-button class="clean-2" type="danger" @click="cleanTracingList">
+        清除所有事件信息
+      </el-button>
+    </div>
+    <div class="right-body">
+      <router-view v-slot="{ Component, route }">
+        <transition name="fade">
+          <component ref="myComponent" :is="Component" :key="route.path" />
+        </transition>
+      </router-view>
+    </div>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+<script setup lang="ts">
+import { provide, ref, onMounted, getCurrentInstance } from "vue";
+import { dynamicRouterMap } from "./router/router.dynamic";
+import { ElMessage, ElMessageBox } from "element-plus";
+import axios from "axios";
+const { proxy } = getCurrentInstance()!;
+
+const lists = ref<any>([]);
+const baseInfo = ref<any>({});
+
+function getBaseInfo() {
+  return axios.get("/getBaseInfo").then((res) => {
+    baseInfo.value = res.data.data;
+  });
+}
+function showBaseInfo() {
+  proxy?.$webSaw("Button clicked!");
+
+  // getBaseInfo().finally(() => {
+  //   if (baseInfo.value) {
+  //     const displayInfo = Object.keys(baseInfo.value).reduce((pre, key) => {
+  //       const value = JSON.stringify(baseInfo.value[key]);
+  //       pre += `<div class='pop-line'><div>${key}: </div><span>${value}</span></div>`;
+  //       return pre;
+  //     }, "");
+  //     console.log("displayInfo", displayInfo);
+  //     ElMessageBox.alert(displayInfo, "核心基础信息", {
+  //       dangerouslyUseHTMLString: true,
+  //       showConfirmButton: false,
+  //       closeOnClickModal: true,
+  //       callback: () => {
+  //         // action
+  //       },
+  //     });
+  //   }
+  // });
+}
+function cleanTracingList() {
+  axios.post("/cleanTracingList").then(() => {
+    ElMessage({
+      message: "清除成功",
+      type: "success",
+      duration: 1000,
+    });
+    // @ts-ignore
+    if (window.getAllTracingList) {
+      // @ts-ignore
+      window.getAllTracingList();
+    }
+  });
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+provide("formatDate", formatDate);
+function formatDate(timestamp: number) {
+  if (!timestamp) return "";
+  const date = new Date(timestamp);
+  const year = date.getFullYear();
+  const month = padZero(date.getMonth() + 1);
+  const day = padZero(date.getDate());
+  const hour = padZero(date.getHours());
+  const minute = padZero(date.getMinutes());
+  const second = padZero(date.getSeconds());
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+}
+function padZero(num: any) {
+  return num.toString().padStart(2, "0");
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+provide("sendMessage", sendMessage);
+function sendMessage(message = "成功触发事件，会有一些延迟，请稍等") {
+  ElMessage({
+    message,
+    type: "success",
+  });
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+provide("emitMessage", emitMessage);
+function emitMessage(text = "成功收集") {
+  ElMessage(text);
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+provide("selfMessage", selfMessage);
+function selfMessage() {
+  // console.log(11);
 }
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
+onMounted(() => {
+  lists.value = dynamicRouterMap.filter((item) => item.path !== "/");
+});
+</script>
 
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+<style scoped lang="scss">
+#app {
+  display: flex;
+  .left-menu {
+    width: 260px;
   }
-
-  .logo {
-    margin: 0 2rem 0 0;
+  .right-body {
+    flex: 1;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 0 20px;
   }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+  .clean-1 {
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    width: 220px;
+    height: 40px;
   }
+  .clean-2 {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 220px;
+    height: 40px;
+  }
+}
+</style>
 
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
+<style lang="scss">
+.pop-line {
+  display: flex;
+  align-items: center;
+  & > div {
+    width: 100px;
+  }
+  & > span {
+    flex: 1;
   }
 }
 </style>

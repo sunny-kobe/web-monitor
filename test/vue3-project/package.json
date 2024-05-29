@@ -11,10 +11,7 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
-    "@websaw/common": "workspace:^",
-    "@websaw/core": "workspace:^",
-    "@websaw/type": "workspace:^",
-    "@websaw/utils": "workspace:^",
+    "@websaw/vue3": "workspace:^",
     "axios": "^1.7.2",
     "element-plus": "^2.7.3",
     "sass": "^1.77.2",

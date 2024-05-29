@@ -57,20 +57,17 @@ importers:
 
   packages/utils: {}
 
-  test/vue3-project:
+  packages/vue3:
     dependencies:
-      '@websaw/common':
-        specifier: workspace:^
-        version: link:../../packages/common
       '@websaw/core':
         specifier: workspace:^
-        version: link:../../packages/core
-      '@websaw/type':
+        version: link:../core
+
+  test/vue3-project:
+    dependencies:
+      '@websaw/vue3':
         specifier: workspace:^
-        version: link:../../packages/type
-      '@websaw/utils':
-        specifier: workspace:^
-        version: link:../../packages/utils
+        version: link:../../packages/vue3
       axios:
         specifier: ^1.7.2
         version: 1.7.2

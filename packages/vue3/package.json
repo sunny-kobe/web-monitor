@@ -1,0 +1,20 @@
+{
+  "name": "@websaw/vue3",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "sunny",
+  "license": "ISC",
+  "dependencies": {
+    "@websaw/core": "workspace:^"
+  }
+}

@@ -8,12 +8,13 @@ pnpm run publish ———— 可以发布包到npm平台上
 
 
 ## 添加本地包
-pnpm add @websaw/common@workspace:^1.0.0 --filter vue3-project
+pnpm add @websaw/vue3@workspace:^ --filter vue3-project
+pnpm add @websaw/core@workspace:^ --filter @websaw/vue3
 pnpm add element-plus --filter vue3-project
 
 
 ## 删除
-pnpm remove @websaw/pk1 --filter vue3-project
+pnpm remove @websaw/core --filter vue3-project
 
 
 ## 埋点统计
