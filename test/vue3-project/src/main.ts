@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import './assets/global.scss'
 import WebSaw from '@websaw/vue3';
 
 const app = createApp(App)

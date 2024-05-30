@@ -22,17 +22,59 @@ pnpm remove @websaw/core --filter vue3-project
 
 
 ### packages
+项目名——web-monitor
 ├── packages
 |   ├── common // 公共变量
 |   |   ├── package.json
 |   ├── core // 核心模块
 |   |   ├── package.json
-|   ├── performance // 性能检测
+|   ├── event-tracking // 埋点功能
 |   |   ├── package.json
-|   ├── recordscreen // 页面录屏
+|   ├── error-monitoring // 错误监控功能
+|   |   ├── package.json
+|   ├── performance // 性能检测
 |   |   ├── package.json
 |   |── types // ts类型
 |   |   ├── package.json
 |   |── utils // 公共方法
 |   |   ├── package.json
+├── example // 示例项目
 ├── package.json
+
+
+### 流程图-mermaid
+graph TD
+    A[Example App] --> B[Event Tracking Module]
+    A[Example App] --> C[Error Monitoring Module]
+    A[Example App] --> D[Performance Monitoring Module]
+
+    subgraph "Core Module"
+        E[Core SDK]
+    end
+
+    subgraph "Common Utilities"
+        F[Common Variables]
+        G[Type Definitions]
+        H[Utility Functions]
+    end
+
+    B[Event Tracking Module] -->|Inherits from| E[Core SDK]
+    C[Error Monitoring Module] -->|Inherits from| E[Core SDK]
+    D[Performance Monitoring Module] -->|Inherits from| E[Core SDK]
+
+    E[Core SDK] --> F[Common Variables]
+    E[Core SDK] --> G[Type Definitions]
+    E[Core SDK] --> H[Utility Functions]
+
+    B[Event Tracking Module] --> F[Common Variables]
+    B[Event Tracking Module] --> G[Type Definitions]
+    B[Event Tracking Module] --> H[Utility Functions]
+
+    C[Error Monitoring Module] --> F[Common Variables]
+    C[Error Monitoring Module] --> G[Type Definitions]
+    C[Error Monitoring Module] --> H[Utility Functions]
+
+    D[Performance Monitoring Module] --> F[Common Variables]
+    D[Performance Monitoring Module] --> G[Type Definitions]
+    D[Performance Monitoring Module] --> H[Utility Functions]
+
