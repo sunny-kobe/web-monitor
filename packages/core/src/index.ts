@@ -1,5 +1,5 @@
 // packages/core/src/index.ts
-import { SDKConfig } from '@web-monitor/types';
+import { SDKConfig } from '@websaw/types';
 
 class CoreSDK {
     protected config: SDKConfig;

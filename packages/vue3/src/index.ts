@@ -1,9 +1,9 @@
+import CoreSDK from '@websaw/core';
 const WebSaw = {
     install(app, options) {
         console.log('SimpleTracing plugin installed with options:', options)
-        app.config.globalProperties.$webSaw = (message: string) => {
-            console.log(`Tracing my: ${message}`)
-        }
+        let config = new CoreSDK(options);
+        app.config.globalProperties.$webSaw = config;
     }
 }
 

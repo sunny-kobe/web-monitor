@@ -1,5 +1,5 @@
-// packages/event-tracking/src/index.ts
-import CoreSDK from '@web-monitor/core';
+// packages/event/src/index.ts
+import CoreSDK from '@websaw/core';
 
 class EventTracking extends CoreSDK {
     public trackEvent(event: string, data: any) {
