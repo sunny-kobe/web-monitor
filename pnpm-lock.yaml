@@ -51,7 +51,19 @@ importers:
 
   packages/common: {}
 
-  packages/core: {}
+  packages/core:
+    dependencies:
+      '@websaw/type':
+        specifier: workspace:^
+        version: link:../type
+
+  packages/error: {}
+
+  packages/event:
+    dependencies:
+      '@websaw/type':
+        specifier: workspace:^
+        version: link:../type
 
   packages/type: {}
 

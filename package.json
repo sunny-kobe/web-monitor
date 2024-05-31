@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "rollup -c",
+    "dev": "pnpm run -C test/vue3-project start",
     "changeset": "changeset",
     "packages-version": "changeset version",
     "publish": "changeset publish --registry=https://registry.npmjs.com/"

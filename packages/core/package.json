@@ -13,5 +13,8 @@
   },
   "keywords": [],
   "author": "sunny",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@websaw/type": "workspace:^"
+  }
 }
