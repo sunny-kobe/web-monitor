@@ -20,13 +20,17 @@ pnpm remove @websaw/core --filter vue3-project
 ## 埋点统计
 
 
-
+我现在在设计一个前端埋点监控SDK，架构为pnpm+menerepo，这是我项目的一些信息
 ### packages
 项目名——web-monitor
 ├── packages
 |   ├── common // 公共变量
 |   |   ├── package.json
 |   ├── core // 核心模块
+│   ├── ├── config.ts
+│   ├── ├── eventBus.ts
+│   ├── ├── baseModule.ts
+│   ├── ├── index.ts
 |   |   ├── package.json
 |   ├── event-tracking // 埋点功能
 |   |   ├── package.json

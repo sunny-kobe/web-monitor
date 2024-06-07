@@ -1,31 +1,68 @@
 // packages/core/src/index.ts
-import { SDKConfig } from '@websaw/types';
+// import type { InitOptions } from '@websaw/type';
 
-class CoreSDK {
-    protected config: SDKConfig;
+// function init(options: InitOptions) {
+//     console.log(options);
+// }
 
-    constructor(config: SDKConfig) {
-        this.config = config;
-        if (config.debug) {
-            console.log('SDK initialized with config:', config);
+
+// export {
+//     init
+// };
+// export type { InitOptions };
+// export default { init };
+
+import { Config, CoreConfig } from './config';
+import { EventBus } from './eventBus';
+import { BaseModule } from './baseModule';
+
+export class CoreSDK {
+    private config: Config;
+    private eventBus: EventBus;
+    private modules: BaseModule[] = [];
+
+    constructor(coreConfig: CoreConfig) {
+        this.config = new Config(coreConfig);
+        this.eventBus = new EventBus();
+        if (this.config.get('debug')) {
+            console.log('CoreSDK initialized with config:', this.config);
         }
     }
 
-    protected log(message: string) {
-        if (this.config.debug) {
-            console.log('Log:', message);
-        }
+    public registerModule(module: BaseModule): void {
+        this.modules.push(module);
+        module.init();
+        this.log(`Module registered: ${module.constructor.name}`);
     }
 
-    protected sendRequest(endpoint: string, data: any) {
-        fetch(this.config.apiUrl + endpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
+    public unregisterModule(module: BaseModule): void {
+        module.destroy();
+        this.modules = this.modules.filter(m => m !== module);
+        this.log(`Module unregistered: ${module.constructor.name}`);
+    }
+
+    public getConfig(): Config {
+        return this.config;
+    }
+
+    public getEventBus(): EventBus {
+        return this.eventBus;
+    }
+
+    public init(): void {
+        this.modules.forEach(module => module.init());
+        this.log('CoreSDK initialized all modules');
+    }
+
+    public destroy(): void {
+        this.modules.forEach(module => module.destroy());
+        this.log('CoreSDK destroyed all modules');
+    }
+
+    private log(message: string): void {
+        if (this.config.get('debug')) {
+            console.log(`[CoreSDK] ${message}`);
+        }
     }
 }
 
-export default CoreSDK;

@@ -1,11 +1,11 @@
-import CoreSDK from '@websaw/core';
+import { init, type InitOptions } from '@websaw/core'
 const WebSaw = {
-    install(app, options) {
-        console.log('SimpleTracing plugin installed with options:', options)
-        let config = new CoreSDK(options);
-        app.config.globalProperties.$webSaw = config;
+    install(app: any, options: InitOptions) {
+        init(options)
     }
 }
+
+
 
 
 export default WebSaw

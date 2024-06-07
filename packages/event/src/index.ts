@@ -1,11 +1,30 @@
 // packages/event/src/index.ts
-import CoreSDK from '@websaw/core';
+import { BaseModule, CoreSDK } from '@websaw/core';
 
-class EventTracking extends CoreSDK {
-    public trackEvent(event: string, data: any) {
-        this.log(`Tracking event: ${event}`);
-        this.sendRequest('/track', { event, data });
+class EventTracking extends BaseModule {
+
+    public init(): void {
+        super.init();
+        // 初始化事件跟踪逻辑
+        this.eventBus.on('trackEvent', this.trackEvent.bind(this));
+    }
+
+    private trackEvent(event: any): void {
+        // 事件处理逻辑
+        console.log('Tracking event:', event);
     }
 }
 
-export default EventTracking;
+// 使用核心模块
+const coreConfig = {
+    appId: 'your-app-id',
+    reportUrl: 'https://your-report-url.com',
+};
+
+const coreSDK = new CoreSDK(coreConfig);
+const eventTrackingModule = new EventTracking({
+    config: coreSDK.getConfig(),
+    eventBus: coreSDK.getEventBus(),
+});
+
+coreSDK.registerModule(eventTrackingModule);
