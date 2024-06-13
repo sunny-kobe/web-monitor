@@ -77,3 +77,6 @@ export class CoreSDK {
     }
 }
 
+export * from './config';
+export * from './eventBus';
+export * from './baseModule';

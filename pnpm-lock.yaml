@@ -53,6 +53,9 @@ importers:
 
   packages/core:
     dependencies:
+      '@websaw/event':
+        specifier: workspace:^
+        version: link:../event
       '@websaw/type':
         specifier: workspace:^
         version: link:../type
@@ -61,6 +64,9 @@ importers:
 
   packages/event:
     dependencies:
+      '@websaw/core':
+        specifier: workspace:^
+        version: link:../core
       '@websaw/type':
         specifier: workspace:^
         version: link:../type
@@ -74,6 +80,9 @@ importers:
       '@websaw/core':
         specifier: workspace:^
         version: link:../core
+      '@websaw/event':
+        specifier: workspace:^
+        version: link:../event
 
   test/vue3-project:
     dependencies:
