@@ -8,9 +8,14 @@ const app = createApp(App)
 
 app.use(router)
 app.use(WebSaw, {
-    dsn: '/trackweb',
-    appName: 'cxh',
-    debug: true
+    coreConfig: {
+        appId: 'your-app-id',
+        reportUrl: 'https://your-report-url.com',
+        debug: true,
+    },
+    callback: (event) => {
+        console.log('Click event detected:', event);
+    }
 })
 
 app.mount('#app')
