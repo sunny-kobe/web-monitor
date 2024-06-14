@@ -24,10 +24,11 @@ export class BaseModule {
     // 初始化方法，防止重复初始化，并输出日志
     public init(): void {
         if (this.isInitialized) {
-            throw new Error('Module already initialized');
+            this.log('Module already initialized');
+            return;
         }
         this.isInitialized = true;
-        this.log('Module initialized');
+        this.log('模块初始化');
     }
 
     // 销毁方法，重置初始化状态，并输出日志
