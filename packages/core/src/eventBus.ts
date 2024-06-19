@@ -10,46 +10,71 @@ interface EventHandlerWrapper {
     priority: number;
 }
 
-// EventBus类，用于模块间事件通信
+/**
+ * EventBus类，用于模块间事件通信
+ * 表示一个事件总线，允许注册事件处理程序并触发事件。
+ */
 export class EventBus {
-    // 使用Map存储事件名称和对应的处理器列表
+    /**
+     * 存储事件名称和对应处理程序列表的映射。
+     */
     private events: Map<string, EventHandlerWrapper[]> = new Map();
 
-    // 普通事件监听方法，接收事件名称、处理器函数和优先级（默认0）
+    /**
+     * 注册一个普通事件的处理程序。
+     * @param event - 事件的名称。
+     * @param handler - 当事件触发时要调用的处理程序函数。
+     * @param priority - 处理程序的优先级（默认值: 0）。
+     */
     public on(event: string, handler: EventHandler, priority = 0): void {
         this.addEventHandler(event, handler, false, priority);
     }
 
-    // 一次性事件监听方法，接收事件名称、处理器函数和优先级（默认0）
+    /**
+     * 注册一个一次性事件的处理程序。
+     * @param event - 事件的名称。
+     * @param handler - 当事件触发时要调用的处理程序函数。
+     * @param priority - 处理程序的优先级（默认值: 0）。
+     */
     public once(event: string, handler: EventHandler, priority = 0): void {
         this.addEventHandler(event, handler, true, priority);
     }
 
-    // 取消事件监听方法，接收事件名称和处理器函数
+    /**
+     * 取消注册一个事件的处理程序。
+     * @param event - 事件的名称。
+     * @param handler - 要取消注册的处理程序函数。
+     */
     public off(event: string, handler: EventHandler): void {
         if (this.events.has(event)) {
             this.events.set(event, this.events.get(event)!.filter(h => h.handler !== handler));
         }
     }
 
-    // 触发事件方法，接收事件名称和可变参数
+    /**
+     * 触发一个事件并调用所有已注册的处理程序。
+     * @param event - 事件的名称。
+     * @param args - 要传递给处理程序的参数。
+     */
     public emit(event: string, ...args: any[]): void {
         if (this.events.has(event)) {
-            this.events.get(event)!.forEach(wrapper => {
-                wrapper.handler(...args);
-                if (wrapper.once) {
-                    this.off(event, wrapper.handler);
-                }
-            });
+            const handlers = this.events.get(event)!;
+            handlers.sort((a, b) => b.priority - a.priority);
+            handlers.forEach(handler => handler.handler(...args));
         }
     }
 
-    // 添加事件处理器方法，接收事件名称、处理器函数、一次性标志和优先级
+    /**
+     * 添加一个事件处理程序。
+     * @param event - 事件的名称。
+     * @param handler - 处理程序函数。
+     * @param once - 是否为一次性事件。
+     * @param priority - 处理程序的优先级。
+     */
     private addEventHandler(event: string, handler: EventHandler, once: boolean, priority: number): void {
-        if (!this.events.has(event)) {
-            this.events.set(event, []);
-        }
-        this.events.get(event)!.push({ handler, once, priority });
-        this.events.set(event, this.events.get(event)!.sort((a, b) => b.priority - a.priority));
+        const eventHandlers = this.events.get(event) || [];
+        eventHandlers.push({ handler, once, priority });
+        this.events.set(event, eventHandlers);
     }
+
 }

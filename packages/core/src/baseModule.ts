@@ -9,7 +9,11 @@ export interface BaseModuleOptions {
     eventBus: EventBus;
 }
 
-// BaseModule类，所有功能模块的基类
+/**
+ * BaseModule类，所有功能模块的基类
+ * 基础模块提供了初始化和销毁功能，并保证模块只能被初始化一次
+ * 其他功能模块通过继承基础模块来实现各自的功能。
+ */
 export class BaseModule {
     protected config: Config;       // 模块的配置
     protected eventBus: EventBus;   // 模块的事件总线

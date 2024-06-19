@@ -1,19 +1,3 @@
-// packages/core/src/index.ts
-// import type { InitOptions } from '@websaw/type';
-
-// function init(options: InitOptions) {
-//     console.log(options);
-// }
-
-
-// export {
-//     init
-// };
-// export type { InitOptions };
-// export default { init };
-
-// index.ts
-
 import { Config, CoreConfig } from './config';
 import { EventBus } from './eventBus';
 import { BaseModule } from './baseModule';
@@ -46,7 +30,6 @@ export class CoreSDK {
      */
     public registerModule(module: BaseModule): void {
         this.modules.push(module);
-        module.init();
         this.log(`模块注册: ${module.constructor.name}`);
     }
 
