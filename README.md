@@ -9,7 +9,7 @@ pnpm run publish ———— 可以发布包到npm平台上
 
 ## 添加本地包
 pnpm add @websaw/vue3@workspace:^ --filter vue3-project
-pnpm add @websaw/core@workspace:^ --filter @websaw/vue3
+pnpm add @websaw/core@workspace:^ --filter @websaw/event
 pnpm add element-plus --filter vue3-project
 
 
@@ -18,7 +18,10 @@ pnpm remove @websaw/core --filter vue3-project
 
 
 ## 埋点统计
-
+核心模块（CoreSDK）：管理配置、事件总线和功能模块。
+基础模块（BaseModule）：提供初始化和销毁功能，确保模块只能初始化一次。
+功能模块（ClickEventModule）：继承基础模块，实现具体的功能（如点击事件跟踪）。
+Vue3 插件：将SDK集成到Vue3应用中，方便使用和管理。
 
 我现在在设计一个前端埋点监控SDK，架构为pnpm+menerepo，这是我项目的一些信息
 ### packages
