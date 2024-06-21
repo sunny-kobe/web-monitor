@@ -9,7 +9,35 @@ export interface ClickEvent {
     timestamp: number;
 }
 
-// ClickEventModule类，继承BaseModule，用于监听点击事件
+
+/**
+ * 表示用于跟踪用户交互的点击事件模板。
+ */
+class RequestTemplateClick {
+    eventId = '' // 事件ID
+    eventType = '' // 事件类型
+    title = '' // 事件名
+    triggerPageUrl = '' // 当前页面URL
+    x = -1 // 被点击元素与屏幕左边距离
+    y = -1 // 被点击元素与屏幕上边距离
+    params = {} // 事件参数
+    elementPath = '' // 被点击元素的层级
+    triggerTime = -1 // 事件发生时间
+
+    /**
+     * 创建 RequestTemplateClick 类的新实例。
+     * @param config - 点击事件的配置对象。
+     */
+    constructor(config = {}) {
+        Object.keys(config).forEach(key => {
+            // if (isValidKey(key, config)) {
+            //     this[key] = config[key] || null
+            // }
+            this[key] = config[key] || null
+        })
+    }
+}
+
 /**
  * 表示用于处理单击事件的模块.
  * @extends BaseModule
@@ -27,13 +55,31 @@ export class ClickEventModule extends BaseModule {
 
         // Define the click event handler function
         this.handleClick = (event: MouseEvent) => {
+            // 获取被点击的元素到最外层元素组成的数组
+            const path: HTMLElement[] = event.composedPath()
+                ? (event.composedPath() as HTMLElement[])
+                : event.target
+                    ? getNodePath(event.target as HTMLElement)
+                    : []
+            // 检查被点击的元素以及其父级元素是否有这些属性(从内到外)
+            const target = path.find(
+                el =>
+                    el.hasAttribute &&
+                    (el.hasAttribute('data-warden-container') ||
+                        el.hasAttribute('data-warden-event-id') ||
+                        el.hasAttribute('data-warden-title'))
+            )
+
+            if (!target) return;
+
+
             const clickEvent: ClickEvent = {
                 x: event.clientX,
                 y: event.clientY,
                 timestamp: Date.now(),
             };
-            this.callback(clickEvent);
-            this.eventBus.emit('clickEvent', clickEvent);  // Send the event through the event bus
+            this.callback(target);
+            this.eventBus.emit('clickEvent', target);  // Send the event through the event bus
         };
     }
 
@@ -56,3 +102,21 @@ export class ClickEventModule extends BaseModule {
     }
 }
 
+
+/**
+ * 获取目标元素到最外层元素组成的数组
+ */
+function getNodePath(
+    node: HTMLElement,
+    options = { includeSelf: true, order: 'asc' }
+) {
+    if (!node) return []
+    const { includeSelf, order } = options
+    let parent = includeSelf ? node : node.parentElement
+    let result: HTMLElement[] = []
+    while (parent) {
+        result = order === 'asc' ? result.concat(parent) : [parent].concat(result)
+        parent = parent.parentElement
+    }
+    return result
+}

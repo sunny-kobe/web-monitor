@@ -1,5 +1,5 @@
 import { CoreSDK } from '@websaw/core'
-import { ClickEventModule, ClickEvent } from '@websaw/event'
+import { ClickEventModule, type ClickEvent } from '@websaw/event'
 // import type { App } from 'vue';  // 仅引入类型
 
 // 定义插件选项的接口
@@ -30,6 +30,10 @@ const WebSaw = {
                 coreSDK.destroy();
             }
         });
+
+        // 将核心SDK和模块挂载到全局属性，方便调试和访问
+        app.config.globalProperties.$coreSDK = coreSDK;
+        app.config.globalProperties.$clickEventModule = clickEventModule;
     }
 }
 
