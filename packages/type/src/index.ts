@@ -1,3 +1,7 @@
-export function type(): any {
-    console.log('I am type, package version 1.0.0');
+
+/**
+ * sdk初始化入参配置
+ */
+export type InitOptions = {
+    dsn: string // 上报地址
 }
