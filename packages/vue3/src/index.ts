@@ -9,7 +9,7 @@ interface ClickEventPluginOptions {
 }
 
 const WebSaw = {
-    install(app: any, options: any) {
+    install(app: any, options: ClickEventPluginOptions) {
         // 初始化核心SDK
         const coreSDK = new CoreSDK(options.coreConfig);
 
@@ -21,19 +21,23 @@ const WebSaw = {
 
         coreSDK.registerModule(clickEventModule);
 
+        // 在插件内部监听 clickEvent 事件
+        coreSDK.getEventBus().on('clickEvent', (event: ClickEvent) => {
+            console.log('Click event received in plugin:', event);
+        });
+
         // 核心SDK初始化
         coreSDK.init();
-
-        // 挂载Vue应用时的钩子
-        app.mixin({
-            beforeUnmount() {
-                coreSDK.destroy();
-            }
-        });
 
         // 将核心SDK和模块挂载到全局属性，方便调试和访问
         app.config.globalProperties.$coreSDK = coreSDK;
         app.config.globalProperties.$clickEventModule = clickEventModule;
+
+        // 在应用销毁时销毁coreSDK
+        app.unmount = () => {
+            console.log('App unmounted');
+            coreSDK.destroy();
+        };
     }
 }
 
