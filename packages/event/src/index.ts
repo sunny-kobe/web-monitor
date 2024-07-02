@@ -1,6 +1,7 @@
 // packages/event/src/index.ts
-import { BaseModule, BaseModuleOptions } from "@websaw/core";
+import { BaseModule, type BaseModuleOptions } from "@websaw/core";
 import { isValidKey, getLocationHref, getTimestamp, getElByAttr, isSimpleEl, getNodeXPath, sendData } from '@websaw/utils'
+import { EVENTTYPES, SEDNEVENTTYPES } from '@websaw/common'
 
 // 定义一个接口来描述点击事件的数据结构
 export interface ClickEvent {
@@ -46,7 +47,6 @@ export class ClickEventModule extends BaseModule {
     constructor(options: BaseModuleOptions, private callback: (event: ClickEvent) => void) {
         super(options);
 
-        // Define the click event handler function
         this.handleClick = (event: MouseEvent) => {
             // 获取被点击的元素到最外层元素组成的数组
             const path: HTMLElement[] = event.composedPath()
@@ -71,7 +71,7 @@ export class ClickEventModule extends BaseModule {
             };
 
             const requestTemplateClick = new RequestTemplateClick({
-                eventType: SEDNEVENTTYPES.CLICK,
+                // eventType: SEDNEVENTTYPES.CLICK,
                 triggerTime: getTimestamp(),
                 triggerPageUrl: getLocationHref(),
                 title: extractTitleByTarget(target),
@@ -80,9 +80,9 @@ export class ClickEventModule extends BaseModule {
                 elementPath: getNodeXPath(target).slice(-128),
             });
 
-            this.callback(target);
-            this.eventBus.emit('clickEvent', clickEvent);
-            sendData.emit(requestTemplateClick);
+            // this.callback(clickEvent);
+            this.eventBus.emit('clickEvent', requestTemplateClick);
+            // sendData.emit(requestTemplateClick);
         };
     }
 

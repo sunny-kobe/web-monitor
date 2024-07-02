@@ -15,6 +15,7 @@
   "author": "sunny",
   "license": "ISC",
   "dependencies": {
-    "@websaw/event": "workspace:^"
+    "@websaw/event": "workspace:^",
+    "@websaw/type": "workspace:^"
   }
 }
