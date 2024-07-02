@@ -37,6 +37,11 @@ export class BaseModule {
 
     // 销毁方法，重置初始化状态，并输出日志
     public destroy(): void {
+        console.log('destroy', this.isInitialized);
+        if (!this.isInitialized) {
+            this.log('Module not initialized or already destroyed');
+            return;
+        }
         this.isInitialized = false;
         this.log('Module destroyed');
     }

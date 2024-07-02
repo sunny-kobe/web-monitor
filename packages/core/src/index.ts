@@ -77,7 +77,7 @@ export class CoreSDK {
      * 日志方法，根据配置项中的debug选项决定是否输出日志
      * @param message The message to log.
      */
-    private log(message: string): void {
+    private log(message: any): void {
         if (this.config.get('debug')) {
             console.log(`[CoreSDK] ${message}`);
         }
