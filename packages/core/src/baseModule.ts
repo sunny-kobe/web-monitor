@@ -19,7 +19,10 @@ export class BaseModule {
     protected eventBus: EventBus;   // 模块的事件总线
     private isInitialized: boolean = false; // 模块是否已初始化
 
-    // 构造函数，接收配置和事件总线，并赋值给成员变量
+    /**
+     * 构造函数，接收核心配置，初始化配置和事件总线，并输出调试日志.
+     * @param coreConfig The configuration for the core SDK.
+     */
     constructor(options: BaseModuleOptions) {
         this.config = options.config;
         this.eventBus = options.eventBus;
@@ -46,10 +49,14 @@ export class BaseModule {
         this.log('Module destroyed');
     }
 
-    // 日志方法，根据配置项中的debug选项决定是否输出日志
-    protected log(message: string): void {
+    /**
+     * 日志方法，根据配置项中的debug选项决定是否输出日志
+     * @param message The message to log.
+     */
+    protected log(message: any): void {
         if (this.config.get('debug')) {
-            console.log(`[${this.constructor.name}] ${message}`);
+            // console.log(`[${this.constructor.name}]: ${message}`);
+            console.log(this.constructor.name + message);
         }
     }
 }

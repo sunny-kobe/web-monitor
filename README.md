@@ -9,7 +9,7 @@ pnpm run publish ———— 可以发布包到npm平台上
 
 ## 添加本地包
 pnpm add @websaw/vue3@workspace:^ --filter vue3-project
-pnpm add @websaw/core@workspace:^ --filter @websaw/event
+pnpm add @websaw/utils@workspace:^ --filter @websaw/event
 pnpm add element-plus --filter vue3-project
 
 
