@@ -1,35 +1,16 @@
 <template>
   <div>
-    <div
-      class="box-a mb"
-      data-warden-title="xxx"
-      data-warden-bigTitle="bigTitle"
-      sdfasd
-    >
-      <div
-        class="box-b"
-        data-warden-test="test-1"
-        data-warden-title="titletitle-1"
-        data-warden-bing="bing-1"
-        data-warden-event-id="ddd-1"
-      >
+    <div class="box-a mb" data-warden-title="xxx" data-warden-bigTitle="bigTitle" sdfasd>
+      <div class="box-b" data-warden-test="test-1" data-warden-title="titletitle-1" data-warden-bing="bing-1"
+        data-warden-event-id="ddd-1">
         <div class="box-c">我是最里面的内容 - 1</div>
       </div>
-      <div
-        class="box-b-btn"
-        data-warden-id="我是ID"
-        data-warden-test="test-btn"
-      >
+      <div class="box-b-btn" data-warden-id="我是ID" data-warden-test="test-btn">
         <el-button value="xxxxxx" type="primary">点我一个试试</el-button>
         <el-button value="yyyyyy" type="primary">再点我一个试试</el-button>
       </div>
-      <div
-        class="box-b"
-        data-warden-test="test-2"
-        data-warden-title="titletitle-2"
-        data-warden-bing="bing-2"
-        data-warden-event-id="ddd-2"
-      >
+      <div class="box-b" data-warden-test="test-2" data-warden-title="titletitle-2" data-warden-bing="bing-2"
+        data-warden-event-id="ddd-2">
         <div class="box-c">我是最里面的内容 - 2</div>
       </div>
     </div>
@@ -37,11 +18,7 @@
     <el-button type="primary" @click="getAllTracingList">
       获取最新采集数据
     </el-button>
-    <c-table
-      :data="tracingInfo.data"
-      tableHeight="400"
-      :config="tracingInfo.table.config"
-    >
+    <c-table :data="tracingInfo.data" tableHeight="400" :config="tracingInfo.table.config">
       <template v-slot:index="{ scope }">
         {{ `${scope.index + 1}` }}
       </template>
@@ -57,10 +34,12 @@
 
 <script lang="ts" setup>
 import axios from "axios";
-import { ref, onMounted, inject } from "vue";
+import { ref, onMounted, inject, getCurrentInstance } from "vue";
 
 const formatDate = inject("formatDate", Function, true);
 const selfMessage = inject("selfMessage", Function, true);
+
+const instance = getCurrentInstance();
 
 onMounted(() => {
   // @ts-ignore
@@ -98,6 +77,7 @@ const tracingInfo = ref({
 });
 
 function getAllTracingList() {
+  console.log(instance.appContext.config.globalProperties);
   axios
     .get("/getAllTracingList", { params: { eventType: "click" } })
     .then((res) => {
@@ -113,12 +93,14 @@ function getAllTracingList() {
   padding: 20px;
   border: 1px solid rgba(85, 239, 196, 1);
   box-shadow: inset 0px 0px 20px 0px rgba(85, 239, 196, 1);
+
   .box-b {
     width: 70%;
     height: 100px;
     padding: 20px;
     border: 1px solid #fab1a0;
     box-shadow: inset 0px 0px 20px 0px #fab1a0;
+
     .box-c {
       width: 50%;
       height: 50px;
@@ -127,6 +109,7 @@ function getAllTracingList() {
       box-shadow: inset 0px 0px 20px 0px #74b9ff;
     }
   }
+
   .box-b-btn {
     margin: 10px 0;
   }
