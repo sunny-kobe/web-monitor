@@ -1,6 +1,8 @@
+import { type AnyFun, type AnyObj } from '@websaw/type'
+
 export class SendData {
-  // private events: AnyObj[] = [] // 批次队列
-  // private timeoutID: NodeJS.Timeout | undefined // 延迟发送ID
+  private events: AnyObj[] = [] // 批次队列
+  private timeoutID: any // 延迟发送ID
 
   /**
    * 发送事件列表
@@ -110,61 +112,61 @@ export class SendData {
     //   )
     // }
   }
-  // /**
-  //  * 发送数据
-  //  * @param url 目标地址
-  //  * @param data 附带参数
-  //  */
-  // private executeSend(url: string, data: any) {
-  //   let sendType = 1
-  //   if (options.value.sendTypeByXmlBody) {
-  //     // 强制指定 xml body 形式
-  //     sendType = 3
-  //   } else if (_global.navigator) {
-  //     // sendBeacon 最大64kb
-  //     sendType = isObjectOverSizeLimit(data, 60) ? 3 : 1
-  //   } else {
-  //     // img 限制在 2kb
-  //     sendType = isObjectOverSizeLimit(data, 2) ? 3 : 2
-  //   }
+  /**
+   * 发送数据
+   * @param url 目标地址
+   * @param data 附带参数
+   */
+  private executeSend(url: string, data: any) {
+    let sendType = 1
+    if (options.value.sendTypeByXmlBody) {
+      // 强制指定 xml body 形式
+      sendType = 3
+    } else if (_global.navigator) {
+      // sendBeacon 最大64kb
+      sendType = isObjectOverSizeLimit(data, 60) ? 3 : 1
+    } else {
+      // img 限制在 2kb
+      sendType = isObjectOverSizeLimit(data, 2) ? 3 : 2
+    }
 
-  //   return new Promise(resolve => {
-  //     switch (sendType) {
-  //       case 1:
-  //         resolve({ sendType: 'sendBeacon', success: sendByBeacon(url, data) })
-  //         break
-  //       case 2:
-  //         sendByImage(url, data).then(() => {
-  //           resolve({ sendType: 'image', success: true })
-  //         })
-  //         break
-  //       case 3:
-  //         sendByXML(url, data).then(() => {
-  //           resolve({ sendType: 'xml', success: true })
-  //         })
-  //         break
-  //     }
-  //   })
-  // }
-  // /**
-  //  * 验证选项的类型 - 只验证是否为 {} []
-  //  * 返回 false意思是取消放入队列 / 取消发送
-  //  */
-  // private validateObject(target: any, targetName: string): boolean | void {
-  //   if (target === false) return false
+    return new Promise(resolve => {
+      switch (sendType) {
+        case 1:
+          resolve({ sendType: 'sendBeacon', success: sendByBeacon(url, data) })
+          break
+        case 2:
+          sendByImage(url, data).then(() => {
+            resolve({ sendType: 'image', success: true })
+          })
+          break
+        case 3:
+          sendByXML(url, data).then(() => {
+            resolve({ sendType: 'xml', success: true })
+          })
+          break
+      }
+    })
+  }
+  /**
+   * 验证选项的类型 - 只验证是否为 {} []
+   * 返回 false意思是取消放入队列 / 取消发送
+   */
+  private validateObject(target: any, targetName: string): boolean | void {
+    if (target === false) return false
 
-  //   if (!target) {
-  //     logError(`NullError: ${targetName}期望返回 {} 或者 [] 类型，目前无返回值`)
-  //     return false
-  //   }
-  //   if (['object', 'array'].includes(typeofAny(target))) return true
-  //   logError(
-  //     `TypeError: ${targetName}期望返回 {} 或者 [] 类型，目前是${typeofAny(
-  //       target
-  //     )}类型`
-  //   )
-  //   return false
-  // }
+    if (!target) {
+      logError(`NullError: ${targetName}期望返回 {} 或者 [] 类型，目前无返回值`)
+      return false
+    }
+    if (['object', 'array'].includes(typeofAny(target))) return true
+    logError(
+      `TypeError: ${targetName}期望返回 {} 或者 [] 类型，目前是${typeofAny(
+        target
+      )}类型`
+    )
+    return false
+  }
 }
 
 export let sendData: SendData

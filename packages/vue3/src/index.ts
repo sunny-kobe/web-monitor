@@ -23,7 +23,7 @@ const WebSaw = {
 
         // 在插件内部监听 clickEvent 事件
         coreSDK.getEventBus().on('clickEvent', (event: ClickEvent) => {
-            console.log('Click event received in plugin:', event);
+            console.log('点击事件clickEvent:', event);
         });
 
         // 核心SDK初始化

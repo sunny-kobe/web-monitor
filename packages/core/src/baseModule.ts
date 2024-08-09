@@ -55,8 +55,8 @@ export class BaseModule {
      */
     protected log(message: any): void {
         if (this.config.get('debug')) {
-            // console.log(`[${this.constructor.name}]: ${message}`);
-            console.log(this.constructor.name + message);
+            // console.log(`[${this.constructor.name}]:`, message);
+            console.log(this.constructor.name, message);
         }
     }
 }

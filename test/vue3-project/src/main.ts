@@ -13,7 +13,7 @@ app.use(WebSaw, {
         reportUrl: 'https://your-report-url.com',
         debug: true,
     },
-    callback: (event) => {
+    callback: (event: any) => {
         console.log('Click event detected:', event);
     }
 })

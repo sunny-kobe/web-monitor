@@ -65,13 +65,8 @@ export class ClickEventModule extends BaseModule {
 
             if (!target) return;
 
-            const clickEvent: ClickEvent = {
-                target,
-                timestamp: Date.now(),
-            };
-
             const requestTemplateClick = new RequestTemplateClick({
-                // eventType: SEDNEVENTTYPES.CLICK,
+                eventType: SEDNEVENTTYPES.CLICK,
                 triggerTime: getTimestamp(),
                 triggerPageUrl: getLocationHref(),
                 title: extractTitleByTarget(target),
@@ -82,7 +77,7 @@ export class ClickEventModule extends BaseModule {
 
             // this.callback(clickEvent);
             this.eventBus.emit('clickEvent', requestTemplateClick);
-            // sendData.emit(requestTemplateClick);
+            sendData.emit(requestTemplateClick);
         };
     }
 
